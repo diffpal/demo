@@ -5,6 +5,7 @@ runtime:
     codex-acp:
       type: codex_acp
       codex_acp:
+        model: gpt-5.4-mini
         reasoning_effort: low
 
 diffpal:
