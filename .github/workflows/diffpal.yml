@@ -1,0 +1,59 @@
+name: diffpal
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+concurrency:
+  group: diffpal-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    if: ${{ !github.event.pull_request.draft && github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Codex provider
+        run: npm install --global @openai/codex@0.139.0 @normahq/codex-acp-bridge@1.6.3
+      - name: Authenticate Codex
+        run: |
+          printf '%s' "$OPENAI_API_KEY" | codex login --with-api-key
+          {
+            echo 'sandbox_mode = "danger-full-access"'
+            echo 'approval_policy = "untrusted"'
+          } > "$HOME/.codex/config.toml"
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - name: Review pull request
+        uses: diffpal/action@v1
+        with:
+          diffpal-version: 0.1.40
+          profile: ci
+          base: ${{ github.event.pull_request.base.sha }}
+          head: ${{ github.event.pull_request.head.sha }}
+          repo: ${{ github.repository }}
+          review-id: github-pr-${{ github.event.pull_request.number }}
+          feedback: review
+          gate: true
+          block-on: high
+          instructions-file: .config/diffpal/instructions.md
+          out: .artifacts/diffpal
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload DiffPal artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: diffpal-artifacts
+          path: .artifacts/diffpal/
+          if-no-files-found: warn
