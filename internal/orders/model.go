@@ -13,7 +13,8 @@ type Order struct {
 }
 
 type CreateInput struct {
-	UserID    string
-	ProductID string
-	Quantity  int
+	UserID         string
+	ProductID      string
+	Quantity       int
+	UnitPriceCents int
 }
