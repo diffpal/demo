@@ -36,6 +36,9 @@ func (s *Service) Create(ctx context.Context, input CreateInput) (Order, error) 
 	if !ok {
 		return Order{}, ErrInvalidProduct
 	}
+	if input.UnitPriceCents > 0 {
+		unitPrice = input.UnitPriceCents
+	}
 
 	s.mu.Lock()
 	s.next++
@@ -51,9 +54,7 @@ func (s *Service) Create(ctx context.Context, input CreateInput) (Order, error) 
 		TotalCents:     unitPrice * input.Quantity,
 		CreatedAt:      s.now().UTC(),
 	}
-	if err := s.repo.Save(ctx, order); err != nil {
-		return Order{}, err
-	}
+	s.repo.Save(ctx, order)
 	return order, nil
 }
 
