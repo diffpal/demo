@@ -46,7 +46,7 @@ jobs:
           gate: true
           block-on: high
           instructions-file: .config/diffpal/instructions.md
-          out: .artifacts/diffpal
+          out: .artifacts/diffpal/findings.json
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
