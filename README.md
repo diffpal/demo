@@ -32,6 +32,8 @@ Retrieve it:
 curl http://localhost:8080/orders/ord-000001 -H 'X-User-ID: user-123'
 ```
 
+Check service health with `curl http://localhost:8080/healthz`.
+
 ## Run DiffPal in your own repository
 
 1. Create a repository from this template.
