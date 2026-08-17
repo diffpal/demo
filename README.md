@@ -3,7 +3,7 @@
 A tiny Go service with a deliberately flawed pull request showing how DiffPal
 reviews code inside GitHub Actions.
 
-[View the live demo review](https://github.com/diffpal/demo/pull/5) · [DiffPal documentation](https://diffpal.github.io) · [DiffPal source repository](https://github.com/diffpal/diffpal)
+[View the live demo review](https://github.com/diffpal/demo/pull/7) · [DiffPal documentation](https://diffpal.github.io) · [DiffPal source repository](https://github.com/diffpal/diffpal)
 
 ## What this demonstrates
 
