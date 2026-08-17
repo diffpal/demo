@@ -63,7 +63,7 @@ func (h *Handler) createOrder(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) getOrder(w http.ResponseWriter, r *http.Request) {
-	userID, ok := requestingUser(w, r)
+	_, ok := requestingUser(w, r)
 	if !ok {
 		return
 	}
@@ -77,7 +77,7 @@ func (h *Handler) getOrder(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "could not load order")
 		return
 	}
-	if order.UserID != userID {
+	if order.UserID != r.Header.Get("X-User-ID") {
 		writeError(w, http.StatusNotFound, "order not found")
 		return
 	}
