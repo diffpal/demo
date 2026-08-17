@@ -36,7 +36,7 @@ jobs:
       - name: Review pull request
         uses: diffpal/action@v1
         with:
-          diffpal-version: 0.1.42
+          diffpal-version: 0.1.43
           profile: ci
           base: ${{ github.event.pull_request.base.sha }}
           head: ${{ github.event.pull_request.head.sha }}
